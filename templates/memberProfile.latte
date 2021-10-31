@@ -1,0 +1,13 @@
+{extends layout.latte}
+
+
+{block title}MEMBER PROFILE{/block}
+
+{block body}
+    <div class="container">
+        <div class="row justify-content-md-center">
+            <h1>MEMBER PROFILE</h1>
+        </div>
+    </div>
+    {include membersForm.latte, operation => 'Update'}
+{/block}

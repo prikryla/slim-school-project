@@ -1,0 +1,61 @@
+{extends layout.latte}
+
+{block title}Slim project | Members{/block}
+
+{block body}
+    <div class="container">
+        <div class="row justify-content-md-center">
+            <div class="col-md-10">
+                <form action="{link search}" method="post">
+                    <h1 class="text-center">SEARCH MEMBER</h1>
+                    <input class="form-control" type="text" name="person_name">
+                    <br>
+                    <button type="submit" class="btn btn-primary btn-lg btn-block">
+                        <span class="fa fa-search"></span> Go!
+                    </button>
+                </form>
+                <br>
+                <h1 class="text-center mb-0">MEMBERS</h1>
+                <form action="{link newMember}" method="get">
+                    <br>
+                    <button type="submit" class="btn btn-warning btn-lg btn-block ">
+                        <span class="fa fa-plus"></span> Add member
+                    </button>
+                </form>
+                <table class="table mt-2">
+                    <tr>
+                        <th>First name</th>
+                        <th>Last name</th>
+                        <th>Nickname</th>
+                        <th>Height</th>
+                        <th>Gender</th>
+                        <th>Birthday</th>
+                        <th class="w-auto">Options</th>
+                    </tr>
+                    {foreach $members as $o}
+                        <tr>
+                            <td>{$o['first_name']}</td>
+                            <td>{$o['last_name']}</td>
+                            <td>{$o['nickname']}</td>
+                            <td>{$o['height']}</td>
+                            <td>{$o['gender']}</td>
+                            <td>{$o['birth_day']}</td>
+                            <td>
+                                <a href="?id_person={$o['id_person']}"
+                                   class="btn-sm btn-success"><span class="fa fa-user"></span> Profile</a>
+                            </td>
+                            <td>
+                                <a href="{link member_update}?id_person={$o['id_person']}"
+                                   class="btn-sm btn-primary"><span class="fa fa-pencil"></span> Edit</a>
+                            </td>
+                            <td>
+                                <a href="{link memberDelete}?id_person={$o['id_person']}"
+                                   class="btn-sm btn-danger"><span class="fa fa-trash-o"></span> Delete</a>
+                            </td>
+                        </tr>
+                    {/foreach}
+                </table>
+                </div>
+            </div>
+        </div>
+{/block}
