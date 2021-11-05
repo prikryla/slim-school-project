@@ -1,13 +1,44 @@
 {extends layout.latte}
 
 
-{block title}MEMBER PROFILE{/block}
+{block title}Slim project | Profile{/block}
 
 {block body}
     <div class="container">
-        <div class="row justify-content-md-center">
+        <div class="justify-content-md-center">
             <h1>MEMBER PROFILE</h1>
+            <div class="form-col">
+                <div class="row-sm-2 form-group mt-4">
+                    <label for="first_name">First name</label>
+                    <input class="form-control" type="text" name="first_name" placeholder="First name"
+                           required value="{$person['first_name']}">
+                    <label class="mt-2" for="last_name">Last name</label>
+
+                    <input class="form-control" type="text" name="last_name" placeholder="Last name"
+                           required value="{$person['last_name']}">
+                    <label class="mt-2" for="nickname">Nickname</label>
+
+                    <input class="form-control" type="text" name="nickname" placeholder="Nickname"
+                           required value="{$person['nickname']}">
+                    <label class="mt-2" for="height">Height</label>
+
+                    <input class="form-control" type="number" name="height" placeholder="Height"
+                           required value="{$person['height']}">
+                    <label class="mt-2" for="gender">Gender</label>
+
+                    <select class="form-control" name="gender">
+                        <option value="female" {if $person['gender']=='female'}selected{/if}>Female</option>
+                        <option value="male" {if $person['gender']=='male'}selected{/if}>Male</option>
+                    </select>
+                    <label class="mt-2" for="birth_day">Birthday</label>
+
+                    <input class="form-control" type="date" name="birth_day" placeholder="Date of birth",
+                           required value="{$person['birth_day']}">
+                    <br>
+                    <a class="btn btn-primary" href="{$basePath}/members" role="button"><span class="fa fa-arrow-left"></span>Back</a>
+                </div>
+            </div>
         </div>
     </div>
-    {include membersForm.latte, operation => 'Update'}
+
 {/block}

@@ -41,11 +41,11 @@
                             <td>{$o['gender']}</td>
                             <td>{$o['birth_day']}</td>
                             <td>
-                                <a href="?id_person={$o['id_person']}"
+                                <a href="{link memberProfile ['id' => $o['id_person'] ]}"
                                    class="btn-sm btn-success"><span class="fa fa-user"></span> Profile</a>
                             </td>
                             <td>
-                                <a href="{link member_update}/{$o['id_person']}"
+                                <a href="{link member_update}?id={$o['id_person']}"
                                    class="btn-sm btn-primary"><span class="fa fa-pencil"></span> Edit</a>
                             </td>
                             <td>

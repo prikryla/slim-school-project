@@ -28,6 +28,23 @@ $app->post('/search', function (Request $request, Response $response, $args) {
     }
 })->setName('search');
 
+$app->get('/member/{id}/profile', function (Request $request, Response $response, $args) {
+    $id = $args['id'];
+    if (empty($id)) {
+        exit('ID PERSON IS MISSING!');
+    } else {
+        $query = $this->db->prepare('SELECT * FROM person WHERE id_person = :id_person');
+        $query->bindValue(':id_person', $id);
+        $query->execute();
+        $tplVars['person'] = $query->fetch();
+        if (empty($tplVars['person'])) {
+            exit("MEMBER NOT FOUND!");
+        } else {
+            return $this->view->render($response, 'memberProfile.latte', $tplVars);
+        }
+    }
+})->setName('memberProfile');
+
 $app->get('/members/new', function (Request $request, Response $response, $args) {
     $tplVars['formData'] = [
         'first_name' => '',
