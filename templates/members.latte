@@ -22,7 +22,7 @@
                         <span class="fa fa-plus"></span> Add member
                     </button>
                 </form>
-                <table class="table mt-2">
+                <table class="table mt-2 text-light">
                     <tr>
                         <th>First name</th>
                         <th>Last name</th>
@@ -45,11 +45,11 @@
                                    class="btn-sm btn-success"><span class="fa fa-user"></span> Profile</a>
                             </td>
                             <td>
-                                <a href="{link member_update}?id_person={$o['id_person']}"
+                                <a href="{link member_update}/{$o['id_person']}"
                                    class="btn-sm btn-primary"><span class="fa fa-pencil"></span> Edit</a>
                             </td>
                             <td>
-                                <a href="{link memberDelete}?id_person={$o['id_person']}"
+                                <a href="{link memberDelete}/{$o['id_person']}"
                                    class="btn-sm btn-danger"><span class="fa fa-trash-o"></span> Delete</a>
                             </td>
                         </tr>
