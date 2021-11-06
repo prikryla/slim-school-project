@@ -86,13 +86,14 @@ $app->post('/members/new', function (Request $request, Response $response, $args
     return $this->view->render($response, 'memberAdd.latte', $tplVars);
 });
 
-$app->get('/members/update', function (Request $request, Response $response, $args) {
-    $params = $request->getQueryParams(); //ziskaj vsetky parametre z url
-    if (empty($params['id_person'])) {
+$app->get('/member/{id}/update', function (Request $request, Response $response, $args) {
+    $id = $args['id'];
+//    $params = $request->getQueryParams(); //ziskaj vsetky parametre z url
+    if (empty($id)) {
         exit('ID PERSON IS MISSING!');
     } else {
         $stmt = $this->db->prepare("SELECT * FROM person WHERE id_person = :id_person");
-        $stmt->bindValue(':id_person', $params['id_person']);
+        $stmt->bindValue(':id_person', $id);
         $stmt->execute();
         $tplVars['formData'] = $stmt->fetch();
         if (empty($tplVars['formData'])) {
@@ -105,10 +106,11 @@ $app->get('/members/update', function (Request $request, Response $response, $ar
 
 
 /* obsluha formu pre update osoby */
-$app->post('/members/update', function (Request $request, Response $response, $args) {
+$app->post('/member/{id}/update', function (Request $request, Response $response, $args) {
+    $id = $args['id'];
     $formData = $request->getParsedBody();
-    $id_person = $request->getQueryParam('id_person');
-    if (empty($formData['first_name']) || empty($formData['last_name']) || empty($formData['nickname']) || empty($id_person)) {
+
+    if (empty($formData['first_name']) || empty($formData['last_name']) || empty($formData['nickname']) || empty($id)) {
         $tplVars['message'] = "PLEASE FILL REQUIRED FIELDS";
     } else {
         try {
@@ -126,7 +128,7 @@ $app->post('/members/update', function (Request $request, Response $response, $a
             $stmt->bindValue(":gn", empty($formData['gender']) ? null : $formData['gender']);
             $stmt->bindValue(":hg", empty($formData['height']) ? null : $formData['height']);
             $stmt->bindValue(":bd", empty($formData['birth_day']) ? null : $formData['birth_day']);
-            $stmt->bindValue(":idp", $id_person);
+            $stmt->bindValue(":idp", $id);
             $stmt->execute();
             $tplVars['message'] = "MEMBER UPDATED!";
         } catch (PDOexception $e) {
@@ -138,11 +140,11 @@ $app->post('/members/update', function (Request $request, Response $response, $a
     return $this->view->render($response, 'memberUpdate.latte', $tplVars);
 });
 
-$app->get('/members/delete', function (Request $request, Response $response, $args) {
-    $id_person = $request->getQueryParam('id_person');
-    if (!empty($id_person)) {
+$app->get('/member/{id}/delete', function (Request $request, Response $response, $args) {
+    $id = $args['id'];
+    if (!empty($id)) {
         try {
-            memberDelete($this->db, $id_person);
+            memberDelete($this->db, $id);
             $tplVars['message'] = ('MEMBER WAS DELETED!');
         } catch (PDOException $exception) {
             $tplVars['message'] = ('ERROR OCCURED' . $exception->getMessage());

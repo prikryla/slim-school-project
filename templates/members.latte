@@ -30,7 +30,7 @@
                         <th>Height</th>
                         <th>Gender</th>
                         <th>Birthday</th>
-                        <th class="w-auto">Options</th>
+                        <th class="text-center">Options</th>
                     </tr>
                     {foreach $members as $o}
                         <tr>
@@ -40,17 +40,13 @@
                             <td>{$o['height']}</td>
                             <td>{$o['gender']}</td>
                             <td>{$o['birth_day']}</td>
-                            <td>
+                            <td class="text-center">
                                 <a href="{link memberProfile ['id' => $o['id_person'] ]}"
-                                   class="btn-sm btn-success"><span class="fa fa-user"></span> Profile</a>
-                            </td>
-                            <td>
-                                <a href="{link member_update}?id={$o['id_person']}"
-                                   class="btn-sm btn-primary"><span class="fa fa-pencil"></span> Edit</a>
-                            </td>
-                            <td>
-                                <a href="{link memberDelete}/{$o['id_person']}"
-                                   class="btn-sm btn-danger"><span class="fa fa-trash-o"></span> Delete</a>
+                                   class="btn-sm btn-success" style="text-decoration: none"><span class="fa fa-user"></span> Profile</a>
+                                <a href="{link member_update ['id' => $o['id_person'] ]}"
+                                   class="btn-sm btn-primary" style="text-decoration: none"><span class="fa fa-pencil"></span> Edit</a>
+                                <a href="{link memberDelete ['id' => $o['id_person'] ]}"
+                                   class="btn-sm btn-danger" style="text-decoration: none"><span class="fa fa-trash-o"></span> Delete</a>
                             </td>
                         </tr>
                     {/foreach}
