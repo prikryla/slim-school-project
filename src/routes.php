@@ -19,11 +19,16 @@ $app->get('/members', function (Request $request, Response $response, $args) {
 
 $app->post('/search', function (Request $request, Response $response, $args) {
     $input = $request->getParsedBody();
-    if (!empty($input)) {
+    if (!empty($input['person_name'])) {
         $stmt = $this->db->prepare('SELECT * FROM person WHERE first_name = :fname');
-        $stmt->bindParam("fname", $input['person_name']);
+        $stmt->bindValue(":fname", $input['person_name']);
         $stmt->execute();
-        $tplVars['osoby'] = $stmt->fetchAll();
+        $tplVars['members'] = $stmt->fetchAll();
+        return $this->view->render($response, 'members.latte', $tplVars);
+    } else {
+        $stmt = $this->db->query('SELECT * FROM person ORDER BY first_name');
+        $tplVars['members'] = $stmt->fetchAll();
+        $tplVars['message'] = "Input is empty!";
         return $this->view->render($response, 'members.latte', $tplVars);
     }
 })->setName('search');

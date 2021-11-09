@@ -6,3 +6,5 @@
 /cache/*
 !/cache/.gitignore
 /.env
+public/error/access.log
+public/error/error.log

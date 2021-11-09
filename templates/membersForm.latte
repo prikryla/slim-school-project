@@ -3,10 +3,10 @@
         {if isset($message)}
             <p>{$message}</p>
         {/if}
-        <div class="row justify-content-md-center">
+        <div class="justify-content-md-center">
         <form method="post">
-            <div class="form-col">
-                <div class="row-sm-2 form-group mt-4">
+            <div class="form-col w-50">
+                <div class="row-sm-1 form-group mt-4">
                     <label for="first_name">First name</label>
                     <input class="form-control" type="text" name="first_name" placeholder="First name"
                             required value="{$formData['first_name']}">
@@ -33,10 +33,10 @@
                     <input class="form-control" type="date" name="birth_day" placeholder="Date of birth",
                            required value="{$formData['birth_day']}">
                     <br>
-                    <div class="col justify-content-md-center">
-                        <button type="submit" class="btn btn-primary pl-2"><span class="fa fa-check"><span>Submit</button>
-                        <a class="btn btn-primary" href="{$basePath}/members" role="button"><span class="fa fa-arrow-left"></span>Back</a>
-                    </div>
+
+                    <button type="submit" class="btn btn-primary pl-2"><span class="fa fa-check">&nbsp;<span>Submit</button>
+                    <a class="btn btn-primary" href="{$basePath}/members" role="button"><span class="fa fa-arrow-left">&nbsp;</span>Back</a>
+
                 </div>
         </form>
         </div>

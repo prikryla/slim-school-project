@@ -6,6 +6,12 @@
     <div class="container">
         <div class="row justify-content-md-center">
             <div class="col-md-10">
+                {if isset($message)}
+                    <div class="alert alert-danger alert-dismissible fade show">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        {$message}
+                    </div>
+                {/if}
                 <form action="{link search}" method="post">
                     <h1 class="text-center">SEARCH MEMBER</h1>
                     <input class="form-control" type="text" name="person_name">
