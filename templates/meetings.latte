@@ -1,0 +1,52 @@
+{extends layout.latte}
+
+{block title}Slim project | Members{/block}
+
+{block body}
+    <div class="container">
+        <div class="row justify-content-md-center">
+            <div class="col-md-10">
+                {if isset($message)}
+                    <div class="alert alert-danger alert-dismissible fade show">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        {$message}
+                    </div>
+                {/if}
+{*                <form action="{link search}" method="post">*}
+{*                    <h1 class="text-center">SEARCH MEETING</h1>*}
+{*                    <input class="form-control" type="text" name="person_name">*}
+{*                    <br>*}
+{*                    <button type="submit" class="btn btn-primary btn-lg btn-block">*}
+{*                        <span class="fa fa-search"></span> Go!*}
+{*                    </button>*}
+{*                </form>*}
+{*                <br>*}
+                <h1 class="text-center mb-0">MEETINGS</h1>
+                <form action="{link newMember}" method="get">
+                    <br>
+                    <button type="submit" class="btn btn-warning btn-lg btn-block ">
+                        <span class="fa fa-plus"></span> Add meeting
+                    </button>
+                </form>
+                <table class="table mt-2 text-light">
+                <tr>
+                    <th>ID meeting</th>
+                    <th>Start</th>
+                    <th>Description</th>
+                    <th>Duration</th>
+                    <th>ID location</th>
+                </tr>
+                {foreach $meetings as $o}
+                    <tr>
+                        <td>{$o['id_meeting']}</td>
+                        <td>{$o['start']}</td>
+                        <td>{$o['description']}</td>
+                        <td>{$o['duration']}</td>
+                        <td>{$o['id_location']}</td>
+                </tr>
+            {/foreach}
+        </table>
+        </div>
+    </div>
+    </div>
+{/block}

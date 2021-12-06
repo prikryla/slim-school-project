@@ -17,6 +17,12 @@ $app->get('/members', function (Request $request, Response $response, $args) {
     return $this->view->render($response, 'members.latte', $tplVars);
 });
 
+$app->get('/meetings', function (Request $request, Response $response, $args) {
+    $stmt = $this->db->query('SELECT * FROM meeting ORDER BY start');
+    $tplVars['meetings'] = $stmt->fetchAll();
+    return $this->view->render($response, 'meetings.latte', $tplVars);
+});
+
 $app->post('/search', function (Request $request, Response $response, $args) {
     $input = $request->getParsedBody();
     if (!empty($input['person_name'])) {
