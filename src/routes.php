@@ -12,13 +12,13 @@ $app->get('/', function (Request $request, Response $response, $args) {
 })->setName('index');
 
 $app->get('/members', function (Request $request, Response $response, $args) {
-    $stmt = $this->db->query('SELECT * FROM person ORDER BY first_name');
+    $stmt = $this->db->query('SELECT * FROM person ORDER BY first_name WHERE is_deleted = false');
     $tplVars['members'] = $stmt->fetchAll();
     return $this->view->render($response, 'members.latte', $tplVars);
 });
 
 $app->get('/meetings', function (Request $request, Response $response, $args) {
-    $stmt = $this->db->query('SELECT * FROM meeting ORDER BY start');
+    $stmt = $this->db->query('SELECT * FROM meeting ORDER BY start WHERE is_deleted = false');
     $tplVars['meetings'] = $stmt->fetchAll();
     return $this->view->render($response, 'meetings.latte', $tplVars);
 });
@@ -45,16 +45,36 @@ $app->get('/meetings/{id}', function (Request $request, Response $response, $arg
 
 })->setName('meetingsDetail');
 
+$app->get('/meetings/{id}/delete', function (Request $request, Response $response, $args) {
+    $id = $args['id'];
+    if (!empty($id)) {
+        try {
+            $stmt = $this->db->prepare('UPDATE meeting SET is_deleted = true WHERE id_meeting = :id_meeting');
+            $stmt->bindValue(':id_meeting', $id);
+            $stmt->execute();
+            $tplVars['message'] = ('Meeting was deleted!');
+        } catch (PDOException $exception) {
+            $tplVars['message'] = ('Error occured - ' . $exception->getMessage());
+        }
+        $stmt = $this->db->query('SELECT * FROM meeting WHERE is_deleted = false ORDER BY start');
+        $tplVars['meetings'] = $stmt->fetchAll();
+        return $this->view->render($response, 'meetings.latte', $tplVars);
+    } else {
+        exit("ID of the meeting is missing!");
+    }
+
+})->setName('meetingDelete');
+
 $app->post('/search', function (Request $request, Response $response, $args) {
     $input = $request->getParsedBody();
     if (!empty($input['person_name'])) {
-        $stmt = $this->db->prepare('SELECT * FROM person WHERE first_name = :fname');
+        $stmt = $this->db->prepare('SELECT * FROM person WHERE first_name = :fname AND is_deleted = false');
         $stmt->bindValue(":fname", $input['person_name']);
         $stmt->execute();
         $tplVars['members'] = $stmt->fetchAll();
         return $this->view->render($response, 'members.latte', $tplVars);
     } else {
-        $stmt = $this->db->query('SELECT * FROM person ORDER BY first_name');
+        $stmt = $this->db->query('SELECT * FROM person WHERE is_deleted = false ORDER BY first_name');
         $tplVars['members'] = $stmt->fetchAll();
         $tplVars['message'] = "Input is empty!";
         return $this->view->render($response, 'members.latte', $tplVars);
@@ -66,7 +86,7 @@ $app->get('/member/{id}/profile', function (Request $request, Response $response
     if (empty($id)) {
         exit('ID PERSON IS MISSING!');
     } else {
-        $queryPerson = $this->db->prepare('SELECT * FROM person WHERE id_person = :id_person');
+        $queryPerson = $this->db->prepare('SELECT * FROM person WHERE id_person = :id_person AND is_deleted = false');
         $queryPerson->bindValue(':id_person', $id);
         $queryPerson->execute();
         $tplVars['profile'] = $queryPerson->fetch();
@@ -76,7 +96,8 @@ $app->get('/member/{id}/profile', function (Request $request, Response $response
              FROM meeting 
              JOIN person_meeting ON meeting.id_meeting = person_meeting.id_meeting 
              JOIN person ON person.id_person = person_meeting.id_person 
-             WHERE person.id_person = :id_person'
+             WHERE person.id_person = :id_person
+             AND person.is_deleted = false'
         );
         $queryMeeting->bindValue(':id_person', $id);
         $queryMeeting->execute();
@@ -88,6 +109,7 @@ $app->get('/member/{id}/profile', function (Request $request, Response $response
             JOIN contact ON person.id_person = contact.id_person
             JOIN contact_type ON contact.id_contact_type = contact_type.id_contact_type
             WHERE person.id_person = :id_person
+            AND person.is_deleted = false
         ');
         $queryContact->bindValue(':id_person', $id);
         $queryContact->execute();
@@ -123,7 +145,7 @@ $app->post('/members/new', function (Request $request, Response $response, $args
         try {
             $stmt = $this->db->prepare("INSERT INTO person 
             (nickname, first_name, last_name, id_location, birth_day, height, gender)
-            VALUES (:nickname, :first_name, :last_name, :id_location, :birth_day, :height, :gender)");
+            VALUES (:nickname, :first_name, :last_name, :id_location, :birth_day, :height, :gender, :is_deleted)");
             $stmt->bindValue(":nickname", $formData['nickname']);
             $stmt->bindValue(":last_name", $formData['last_name']);
             $stmt->bindValue(":first_name", $formData['first_name']);
@@ -131,6 +153,7 @@ $app->post('/members/new', function (Request $request, Response $response, $args
             $stmt->bindValue(":gender", empty($formData['gender']) ? null : $formData['gender']);
             $stmt->bindValue(":height", empty($formData['height']) ? null : $formData['height']);
             $stmt->bindValue(":birth_day", empty($formData['birth_day']) ? null : $formData['birth_day']);
+            $stmt->bindValue(":is_deleted", false);
             $stmt->execute();
             $tplVars['message'] = "MEMBER WAS SUCCESSFULLY ADDED!";
         } catch (PDOException $e) {
@@ -147,7 +170,7 @@ $app->get('/member/{id}/update', function (Request $request, Response $response,
     if (empty($id)) {
         exit('ID PERSON IS MISSING!');
     } else {
-        $stmt = $this->db->prepare("SELECT * FROM person WHERE id_person = :id_person");
+        $stmt = $this->db->prepare("SELECT * FROM person WHERE id_person = :id_person AND is_deleted = false");
         $stmt->bindValue(':id_person', $id);
         $stmt->execute();
         $tplVars['formData'] = $stmt->fetch();

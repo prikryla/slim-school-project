@@ -19,7 +19,7 @@
                         <span class="fa fa-plus"></span> Add meeting
                     </button>
                 </form>
-                <table class="table mt-2 text-light">
+                <table class="table table-light table-striped mt-2">
                     <tr>
                         <th>ID meeting</th>
                         <th>Date</th>
@@ -38,6 +38,8 @@
                             <td>
                                 <a href="{link meetingsDetail ['id' => $o['id_meeting']]}"
                                    class="btn-sm btn-success" style="text-decoration: none"><span class="fa fa-user"></span> Detail</a>
+                                <a href="{link meetingDelete ['id' => $o['id_meeting']]}"
+                                   class="btn-sm btn-danger" style="text-decoration: none"><span class="fa fa-trash"></span> Delete</a>
                             </td>
                         </tr>
                     {/foreach}
