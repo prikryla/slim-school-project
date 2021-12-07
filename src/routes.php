@@ -44,11 +44,33 @@ $app->get('/member/{id}/profile', function (Request $request, Response $response
     if (empty($id)) {
         exit('ID PERSON IS MISSING!');
     } else {
-        $query = $this->db->prepare('SELECT * FROM person WHERE id_person = :id_person');
-        $query->bindValue(':id_person', $id);
-        $query->execute();
-        $tplVars['person'] = $query->fetch();
-        if (empty($tplVars['person'])) {
+        $queryPerson = $this->db->prepare('SELECT * FROM person WHERE id_person = :id_person');
+        $queryPerson->bindValue(':id_person', $id);
+        $queryPerson->execute();
+        $tplVars['profile'] = $queryPerson->fetch();
+
+        $queryMeeting = $this->db->prepare(
+            'SELECT * 
+             FROM meeting 
+             JOIN person_meeting ON meeting.id_meeting = person_meeting.id_meeting 
+             JOIN person ON person.id_person = person_meeting.id_person 
+             WHERE person.id_person = :id_person'
+        );
+        $queryMeeting->bindValue(':id_person', $id);
+        $queryMeeting->execute();
+        $tplVars['meeting'] = $queryMeeting->fetchAll();
+
+        $queryContact = $this->db->prepare('
+            SELECT name, contact 
+            FROM person
+            JOIN contact ON person.id_person = contact.id_person
+            JOIN contact_type ON contact.id_contact_type = contact_type.id_contact_type
+            WHERE person.id_person = :id_person
+        ');
+        $queryContact->bindValue(':id_person', $id);
+        $queryContact->execute();
+        $tplVars['contact'] = $queryContact->fetchAll();
+        if (empty($tplVars['profile'])) {
             exit("MEMBER NOT FOUND!");
         } else {
             return $this->view->render($response, 'memberProfile.latte', $tplVars);

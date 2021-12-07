@@ -1,34 +1,31 @@
 {extends layout.latte}
 
-
 {block title}Slim project | Profile{/block}
 
 {block body}
     <div class="container">
-        <div class="row">
-            <div class="col">
+            <div class="col-lg-5">
                 <h1>MEMBER PROFILE</h1>
-
                 <table class="table table-light table-striped w-75">
                     <tr>
                         <th>First name</th>
-                        <td>{$person['first_name']}</td>
+                        <td>{$profile['first_name']}</td>
                     </tr>
                     <tr>
                         <th>Last name</th>
-                        <td>{$person['last_name']}</td>
+                        <td>{$profile['last_name']}</td>
                     </tr>
                     <tr>
                         <th>Nickname</th>
-                        <td>{$person['nickname']}</td>
+                        <td>{$profile['nickname']}</td>
                     </tr>
                     <tr>
                         <th>Height</th>
-                        <td>{$person['height']}</td>
+                        <td>{$profile['height']}</td>
                     </tr>
                     <tr>
                         <th>Gender</th>
-                        {if $person['gender']=='female'}
+                        {if $profile['gender']=='female'}
                             <td>Female</td>
                         {else}
                             <td>Male</td>
@@ -36,14 +33,44 @@
                     </tr>
                     <tr>
                         <th>Birthday</th>
-                        <td>{$person['birth_day']}</td>
+                        <td>{$profile['birth_day']}</td>
                     </tr>
                 </table>
-                <a class="btn btn-primary" href="{$basePath}/members" role="button"><span class="fa fa-arrow-left">&nbsp;</span>Back</a>
             </div>
             <div class="col">
                 <h1>MEETINGS</h1>
+
+                <table class="table table-light table-striped w-75">
+                    <th>ID</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Description</th>
+                    <th>Duration</th>
+                        {foreach $meeting as $m}
+                            <tr>
+                                <td>{$m['id_meeting']}</td>
+                                <td>{$m['start']|date: '%d.%m.%Y'}</td>
+                                <td>{$m['start'] |slice: 10, 6}</td>
+                                <td>{$m['description']}</td>
+                                <td>{$m['duration']}</td>
+                            </tr>
+                        {/foreach}
+                </table>
             </div>
-        </div>
+            <div class="col">
+                <h1>CONTACTS</h1>
+
+                <table class="table table-light table-striped w-75">
+                    <th>Contact type</th>
+                    <th>Contact</th>
+                    {foreach $contact as $c}
+                        <tr>
+                            <td>{$c['name']}</td>
+                            <td>{$c['contact']}</td>
+                        </tr>
+                    {/foreach}
+                </table>
+            </div>
+        <a class="btn btn-primary" href="{$basePath}/members" role="button"><span class="fa fa-arrow-left">&nbsp;</span>Back</a>
     </div>
 {/block}
