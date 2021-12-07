@@ -1,35 +1,52 @@
 {extends layout.latte}
 
-{block title}Slim project | Members{/block}
+{block title}Slim project | Meeting detail{/block}
 
 {block body}
     <div class="container">
         <div class="row justify-content-md-center">
             <div class="col-md-10">
-                <h1 class="text-center mb-0">MEETINGS</h1>
-                <form action="{link newMember}" method="get">
-                <br>
-                <button type="submit" class="btn btn-warning btn-lg btn-block ">
-                    <span class="fa fa-plus"></span> Add meeting
-                </button>
-                </form>
-                <table class="table mt-2 text-light">
+                <h1 class="text-center mb-0">MEETING DETAIL</h1>
+                <table class="table table-light table-striped mt-5 mb-5">
                     <tr>
                         <th>ID meeting</th>
-                        <th>Start</th>
+                        <th>Date</th>
+                        <th>Time</th>
                         <th>Description</th>
                         <th>Duration</th>
                     </tr>
                     {foreach $meeting_detail as $o}
                         <tr>
                             <td>{$o['id_meeting']}</td>
-                            <td>{$o['start']}</td>
+                            <td>{$o['start']|date: '%d.%m.%Y'}</td>
+                            <td>{$o['start'] |slice: 10, 6}</td>
                             <td>{$o['description']}</td>
                             <td>{$o['duration']}</td>
                         </tr>
                     {/foreach}
                 </table>
             </div>
+            <div class="col-lg-4">
+                <h1 class="text-center mb-0">PERSONS</h1>
+                <table class="table table-light table-striped mt-3">
+                    <tr>
+                        <th>First name</th>
+                        <th>Last name</th>
+                        <th>Action</th>
+                    </tr>
+                    {foreach $person_meeting as $pm}
+                        <tr>
+                            <td>{$pm['first_name']}</td>
+                            <td>{$pm['last_name']}</td>
+                            <td>
+                                <a href="{link memberProfile ['id' => $pm['id_person']]}"
+                                   class="btn-sm btn-success" style="text-decoration: none"><span class="fa fa-user"></span> Detail</a>
+                            </td>
+                        </tr>
+                    {/foreach}
+                </table>
+            </div>
         </div>
+        <a class="btn btn-primary" href="{$basePath}/meetings" role="button"><span class="fa fa-arrow-left">&nbsp;</span>Back</a>
     </div>
 {/block}

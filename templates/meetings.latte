@@ -22,7 +22,8 @@
                 <table class="table mt-2 text-light">
                     <tr>
                         <th>ID meeting</th>
-                        <th>Start</th>
+                        <th>Date</th>
+                        <th>Time</th>
                         <th>Description</th>
                         <th>Duration</th>
                         <th>Action</th>
@@ -30,7 +31,8 @@
                     {foreach $meetings as $o}
                         <tr>
                             <td>{$o['id_meeting']}</td>
-                            <td>{$o['start']}</td>
+                            <td>{$o['start']|date: '%d.%m.%Y'}</td>
+                            <td>{$o['start'] |slice: 10, 6}</td>
                             <td>{$o['description']}</td>
                             <td>{$o['duration']}</td>
                             <td>

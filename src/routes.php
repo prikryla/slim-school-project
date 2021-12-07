@@ -29,6 +29,18 @@ $app->get('/meetings/{id}', function (Request $request, Response $response, $arg
     $stmt->bindValue(':id_meeting', $id);
     $stmt->execute();
     $tplVars['meeting_detail'] = $stmt->fetchAll();
+
+    $query = $this->db->prepare('
+        SELECT person.first_name, person.last_name, person.id_person
+        FROM person
+        JOIN person_meeting ON person.id_person = person_meeting.id_person
+        JOIN meeting ON meeting.id_meeting = person_meeting.id_meeting
+        WHERE meeting.id_meeting = :id_meeting
+    ');
+    $query->bindValue(':id_meeting', $id);
+    $query->execute();
+    $tplVars['person_meeting'] = $query->fetchAll();
+
     return $this->view->render($response, 'meetingsDetail.latte', $tplVars);
 
 })->setName('meetingsDetail');
