@@ -6,18 +6,12 @@
     <div class="container">
         <div class="row justify-content-md-center">
             <div class="col-md-10">
-                {if isset($message)}
-                    <div class="alert alert-danger alert-dismissible fade show">
-                        <button type="button" class="close" data-dismiss="alert">&times;</button>
-                        {$message}
-                    </div>
-                {/if}
                 <h1 class="text-center mb-0">MEETINGS</h1>
                 <form action="{link newMember}" method="get">
-                    <br>
-                    <button type="submit" class="btn btn-warning btn-lg btn-block ">
-                        <span class="fa fa-plus"></span> Add meeting
-                    </button>
+                <br>
+                <button type="submit" class="btn btn-warning btn-lg btn-block ">
+                    <span class="fa fa-plus"></span> Add meeting
+                </button>
                 </form>
                 <table class="table mt-2 text-light">
                     <tr>
@@ -25,18 +19,13 @@
                         <th>Start</th>
                         <th>Description</th>
                         <th>Duration</th>
-                        <th>Action</th>
                     </tr>
-                    {foreach $meetings as $o}
+                    {foreach $meeting_detail as $o}
                         <tr>
                             <td>{$o['id_meeting']}</td>
                             <td>{$o['start']}</td>
                             <td>{$o['description']}</td>
                             <td>{$o['duration']}</td>
-                            <td>
-                                <a href="{link meetingsDetail ['id' => $o['id_meeting']]}"
-                                   class="btn-sm btn-success" style="text-decoration: none"><span class="fa fa-user"></span> Detail</a>
-                            </td>
                         </tr>
                     {/foreach}
                 </table>

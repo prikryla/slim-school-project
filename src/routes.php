@@ -23,6 +23,16 @@ $app->get('/meetings', function (Request $request, Response $response, $args) {
     return $this->view->render($response, 'meetings.latte', $tplVars);
 });
 
+$app->get('/meetings/{id}', function (Request $request, Response $response, $args) {
+    $id = $args['id'];
+    $stmt = $this->db->prepare('SELECT * FROM meeting WHERE id_meeting = :id_meeting');
+    $stmt->bindValue(':id_meeting', $id);
+    $stmt->execute();
+    $tplVars['meeting_detail'] = $stmt->fetchAll();
+    return $this->view->render($response, 'meetingsDetail.latte', $tplVars);
+
+})->setName('meetingsDetail');
+
 $app->post('/search', function (Request $request, Response $response, $args) {
     $input = $request->getParsedBody();
     if (!empty($input['person_name'])) {

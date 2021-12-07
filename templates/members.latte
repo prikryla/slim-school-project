@@ -6,58 +6,62 @@
     <div class="container">
         <div class="row justify-content-md-center">
             <div class="col-md-10">
-                {if isset($message)}
-                    <div class="alert alert-danger alert-dismissible fade show">
-                        <button type="button" class="close" data-dismiss="alert">&times;</button>
-                        {$message}
-                    </div>
-                {/if}
-                <form action="{link search}" method="post">
-                    <h1 class="text-center">SEARCH MEMBER</h1>
-                    <input class="form-control" type="text" name="person_name">
+                <div class="col">
+                    {if isset($message)}
+                        <div class="alert alert-danger alert-dismissible fade show">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            {$message}
+                        </div>
+                    {/if}
+                    <form action="{link search}" method="post">
+                        <h1 class="text-center">SEARCH MEMBER</h1>
+                        <input class="form-control" type="text" name="person_name">
+                        <br>
+                        <button type="submit" class="btn btn-primary btn-lg btn-block">
+                            <span class="fa fa-search"></span> Go!
+                        </button>
+                    </form>
                     <br>
-                    <button type="submit" class="btn btn-primary btn-lg btn-block">
-                        <span class="fa fa-search"></span> Go!
-                    </button>
-                </form>
-                <br>
-                <h1 class="text-center mb-0">MEMBERS</h1>
-                <form action="{link newMember}" method="get">
-                    <br>
-                    <button type="submit" class="btn btn-warning btn-lg btn-block ">
-                        <span class="fa fa-plus"></span> Add member
-                    </button>
-                </form>
-                <table class="table mt-2 text-light">
-                    <tr>
-                        <th>First name</th>
-                        <th>Last name</th>
-                        <th>Nickname</th>
-                        <th>Height</th>
-                        <th>Gender</th>
-                        <th>Birthday</th>
-                        <th class="text-center">Options</th>
-                    </tr>
-                    {foreach $members as $o}
+                    <h1 class="text-center mb-0">MEMBERS</h1>
+                    <form action="{link newMember}" method="get">
+                        <br>
+                        <button type="submit" class="btn btn-warning btn-lg btn-block ">
+                            <span class="fa fa-plus"></span> Add member
+                        </button>
+                    </form>
+                </div>
+                <div class="col">
+                    <table class="table mt-2 text-light">
                         <tr>
-                            <td>{$o['first_name']}</td>
-                            <td>{$o['last_name']}</td>
-                            <td>{$o['nickname']}</td>
-                            <td>{$o['height']}</td>
-                            <td>{$o['gender']}</td>
-                            <td>{$o['birth_day']}</td>
-                            <td class="text-center">
-                                <a href="{link memberProfile ['id' => $o['id_person'] ]}"
-                                   class="btn-sm btn-success" style="text-decoration: none"><span class="fa fa-user"></span> Profile</a>
-                                <a href="{link member_update ['id' => $o['id_person'] ]}"
-                                   class="btn-sm btn-primary" style="text-decoration: none"><span class="fa fa-pencil"></span> Edit</a>
-                                <a href="{link memberDelete ['id' => $o['id_person'] ]}"
-                                   class="btn-sm btn-danger" style="text-decoration: none"><span class="fa fa-trash-o"></span> Delete</a>
-                            </td>
+                            <th>First name</th>
+                            <th>Last name</th>
+                            <th>Nickname</th>
+                            <th>Height</th>
+                            <th>Gender</th>
+                            <th>Birthday</th>
+                            <th class="text-center">Options</th>
                         </tr>
-                    {/foreach}
-                </table>
+                        {foreach $members as $o}
+                            <tr>
+                                <td>{$o['first_name']}</td>
+                                <td>{$o['last_name']}</td>
+                                <td>{$o['nickname']}</td>
+                                <td>{$o['height']}</td>
+                                <td>{$o['gender']}</td>
+                                <td>{$o['birth_day']}</td>
+                                <td class="text-center">
+                                    <a href="{link memberProfile ['id' => $o['id_person']]}"
+                                       class="btn-sm btn-success" style="text-decoration: none"><span class="fa fa-user"></span> Profile</a>
+                                    <a href="{link member_update ['id' => $o['id_person']]}"
+                                       class="btn-sm btn-primary" style="text-decoration: none"><span class="fa fa-pencil"></span> Edit</a>
+                                    <a href="{link memberDelete ['id' => $o['id_person']]}"
+                                       class="btn-sm btn-danger" style="text-decoration: none"><span class="fa fa-trash-o"></span> Delete</a>
+                                </td>
+                            </tr>
+                        {/foreach}
+                    </table>
                 </div>
             </div>
         </div>
+    </div>
 {/block}

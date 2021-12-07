@@ -4,8 +4,9 @@
 
 {block body}
     <div class="container">
+        <div class="row">
             <div class="col-lg-5">
-                <h1>MEMBER PROFILE</h1>
+                <h1>MEMBER PROFILE <a href="{link newMember}"><i class="fa fa-pencil link-light" aria-hidden="true"></i></a></h1>
                 <table class="table table-light table-striped w-75">
                     <tr>
                         <th>First name</th>
@@ -37,7 +38,7 @@
                     </tr>
                 </table>
             </div>
-            <div class="col">
+            <div class="col-lg-5">
                 <h1>MEETINGS</h1>
 
                 <table class="table table-light table-striped w-75">
@@ -46,6 +47,7 @@
                     <th>Time</th>
                     <th>Description</th>
                     <th>Duration</th>
+                    <th></th>
                         {foreach $meeting as $m}
                             <tr>
                                 <td>{$m['id_meeting']}</td>
@@ -53,11 +55,12 @@
                                 <td>{$m['start'] |slice: 10, 6}</td>
                                 <td>{$m['description']}</td>
                                 <td>{$m['duration']}</td>
+                                <td></td>
                             </tr>
                         {/foreach}
                 </table>
             </div>
-            <div class="col">
+            <div class="col-lg-5">
                 <h1>CONTACTS</h1>
 
                 <table class="table table-light table-striped w-75">
@@ -71,6 +74,7 @@
                     {/foreach}
                 </table>
             </div>
+        </div>
         <a class="btn btn-primary" href="{$basePath}/members" role="button"><span class="fa fa-arrow-left">&nbsp;</span>Back</a>
     </div>
 {/block}
