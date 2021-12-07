@@ -5,22 +5,45 @@
 
 {block body}
     <div class="container">
-        <div class="justify-content-md-center">
-            <h1>MEMBER PROFILE</h1>
+        <div class="row">
+            <div class="col">
+                <h1>MEMBER PROFILE</h1>
 
-            <p>First name - {$person['first_name']}</p>
-            <p>Last name - {$person['last_name']}</p>
-            <p>Nickname - {$person['nickname']}</p>
-            <p>Height - {$person['height']}</p>
-            {if $person['gender']=='female'}
-                <p>Gender - female</p>
-            {else}
-                <p>Gender - male</p>
-            {/if}
-            <p>Birthday - {$person['birth_day']}</p>
-            <br>
-            <a class="btn btn-primary" href="{$basePath}/members" role="button"><span class="fa fa-arrow-left">&nbsp;</span>Back</a>
+                <table class="table table-light table-striped w-75">
+                    <tr>
+                        <th>First name</th>
+                        <td>{$person['first_name']}</td>
+                    </tr>
+                    <tr>
+                        <th>Last name</th>
+                        <td>{$person['last_name']}</td>
+                    </tr>
+                    <tr>
+                        <th>Nickname</th>
+                        <td>{$person['nickname']}</td>
+                    </tr>
+                    <tr>
+                        <th>Height</th>
+                        <td>{$person['height']}</td>
+                    </tr>
+                    <tr>
+                        <th>Gender</th>
+                        {if $person['gender']=='female'}
+                            <td>Female</td>
+                        {else}
+                            <td>Male</td>
+                        {/if}
+                    </tr>
+                    <tr>
+                        <th>Birthday</th>
+                        <td>{$person['birth_day']}</td>
+                    </tr>
+                </table>
+                <a class="btn btn-primary" href="{$basePath}/members" role="button"><span class="fa fa-arrow-left">&nbsp;</span>Back</a>
+            </div>
+            <div class="col">
+                <h1>MEETINGS</h1>
+            </div>
         </div>
     </div>
-
 {/block}
