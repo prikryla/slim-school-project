@@ -12,13 +12,13 @@ $app->get('/', function (Request $request, Response $response, $args) {
 })->setName('index');
 
 $app->get('/members', function (Request $request, Response $response, $args) {
-    $stmt = $this->db->query('SELECT * FROM person ORDER BY first_name WHERE is_deleted = false');
+    $stmt = $this->db->query('SELECT * FROM person WHERE is_deleted = false ORDER BY first_name');
     $tplVars['members'] = $stmt->fetchAll();
     return $this->view->render($response, 'members.latte', $tplVars);
 });
 
 $app->get('/meetings', function (Request $request, Response $response, $args) {
-    $stmt = $this->db->query('SELECT * FROM meeting ORDER BY start WHERE is_deleted = false');
+    $stmt = $this->db->query('SELECT * FROM meeting WHERE is_deleted = false ORDER BY start');
     $tplVars['meetings'] = $stmt->fetchAll();
     return $this->view->render($response, 'meetings.latte', $tplVars);
 });
@@ -97,7 +97,7 @@ $app->get('/member/{id}/profile', function (Request $request, Response $response
              JOIN person_meeting ON meeting.id_meeting = person_meeting.id_meeting 
              JOIN person ON person.id_person = person_meeting.id_person 
              WHERE person.id_person = :id_person
-             AND person.is_deleted = false'
+             AND meeting.is_deleted = false'
         );
         $queryMeeting->bindValue(':id_person', $id);
         $queryMeeting->execute();
