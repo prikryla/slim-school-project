@@ -23,6 +23,41 @@ $app->get('/meetings', function (Request $request, Response $response, $args) {
     return $this->view->render($response, 'meetings.latte', $tplVars);
 });
 
+$app->get('/meetings/new', function (Request $request, Response $response, $args) {
+    $tplVars['formData'] = [
+        'start' => '',
+        'description' => '',
+        'duration' => '',
+        'id_location' => 43,
+        'is_deleted' => false
+    ];
+    return $this->view->render($response, 'meetingAdd.latte', $tplVars);
+})->setName('newMeeting');
+
+$app->post('/meetings/new', function (Request $request, Response $response, $args) {
+    $formData = $request->getParsedBody();
+    if (empty($formData['start']) || empty($formData['description']) || empty($formData['duration'])) {
+        $tplVars['message'] = "PLEASE FILL REQUIRED FIELDS!";
+    } else {
+        try {
+            $stmt = $this->db->prepare("INSERT INTO meeting 
+                (start, description, duration, id_location, is_deleted)
+                VALUES (:start, :description, :duration, :id_location, :is_deleted)");
+            $stmt->bindValue(":start", $formData['start']);
+            $stmt->bindValue(":description", $formData['description']);
+            $stmt->bindValue(":duration", $formData['duration']);
+            $stmt->bindValue(":id_location", 43);
+            $stmt->bindValue(":is_deleted", 'false');
+            $stmt->execute();
+            $tplVars['message'] = "Meeting was successfully created!";
+        } catch (PDOException $e) {
+            $tplVars['message'] = "Error occured " . $e->getMessage();
+        }
+    }
+    $tplVars['formData'] = $formData;
+    return $this->view->render($response, 'meetingAdd.latte', $tplVars);
+});
+
 $app->get('/meetings/{id}', function (Request $request, Response $response, $args) {
     $id = $args['id'];
     $stmt = $this->db->prepare('SELECT * FROM meeting WHERE id_meeting = :id_meeting');
@@ -41,11 +76,20 @@ $app->get('/meetings/{id}', function (Request $request, Response $response, $arg
     $query->execute();
     $tplVars['person_meeting'] = $query->fetchAll();
 
+    $location = $this->db->prepare('
+        SELECT *
+        FROM location
+        JOIN meeting ON location.id_location = meeting.id_location
+        WHERE meeting.id_meeting = :id_meeting
+    ');
+    $location->bindValue(":id_meeting", $id);
+    $location->execute();
+    $tplVars['location'] = $location->fetchAll();
     return $this->view->render($response, 'meetingsDetail.latte', $tplVars);
 
 })->setName('meetingsDetail');
 
-$app->get('/meetings/{id}/delete', function (Request $request, Response $response, $args) {
+$app->get('/meetings/delete/{id}', function (Request $request, Response $response, $args) {
     $id = $args['id'];
     if (!empty($id)) {
         try {
@@ -130,11 +174,11 @@ $app->get('/members/new', function (Request $request, Response $response, $args)
         'id_location' => null,
         'gender' => '',
         'height' => '',
-        'birth_day' => ''
+        'birth_day' => '',
+        'is_deleted' => false
     ];
     return $this->view->render($response, 'memberAdd.latte', $tplVars);
 })->setName('newMember');
-
 
 /* Obsluha formu pre novu osoby*/
 $app->post('/members/new', function (Request $request, Response $response, $args) {
@@ -144,7 +188,7 @@ $app->post('/members/new', function (Request $request, Response $response, $args
     } else {
         try {
             $stmt = $this->db->prepare("INSERT INTO person 
-            (nickname, first_name, last_name, id_location, birth_day, height, gender)
+            (nickname, first_name, last_name, id_location, birth_day, height, gender, is_deleted)
             VALUES (:nickname, :first_name, :last_name, :id_location, :birth_day, :height, :gender, :is_deleted)");
             $stmt->bindValue(":nickname", $formData['nickname']);
             $stmt->bindValue(":last_name", $formData['last_name']);
@@ -153,7 +197,7 @@ $app->post('/members/new', function (Request $request, Response $response, $args
             $stmt->bindValue(":gender", empty($formData['gender']) ? null : $formData['gender']);
             $stmt->bindValue(":height", empty($formData['height']) ? null : $formData['height']);
             $stmt->bindValue(":birth_day", empty($formData['birth_day']) ? null : $formData['birth_day']);
-            $stmt->bindValue(":is_deleted", false);
+            $stmt->bindValue(":is_deleted", 'false');
             $stmt->execute();
             $tplVars['message'] = "MEMBER WAS SUCCESSFULLY ADDED!";
         } catch (PDOException $e) {

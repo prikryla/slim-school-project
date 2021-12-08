@@ -4,7 +4,7 @@
 
 {block body}
     <div class="container">
-        <div class="row justify-content-md-center">
+        <div class="row justify-content-md-center mb-lg-5">
             <div class="col-md-10">
                 {if isset($message)}
                     <div class="alert alert-danger alert-dismissible fade show">
@@ -13,7 +13,7 @@
                     </div>
                 {/if}
                 <h1 class="text-center mb-0">MEETINGS</h1>
-                <form action="{link newMember}" method="get">
+                <form action="{link newMeeting}" method="get">
                     <br>
                     <button type="submit" class="btn btn-warning btn-lg btn-block ">
                         <span class="fa fa-plus"></span> Add meeting
@@ -26,7 +26,7 @@
                         <th>Time</th>
                         <th>Description</th>
                         <th>Duration</th>
-                        <th>Action</th>
+                        <th class="text-center">Action</th>
                     </tr>
                     {foreach $meetings as $o}
                         <tr>
@@ -35,7 +35,7 @@
                             <td>{$o['start'] |slice: 10, 6}</td>
                             <td>{$o['description']}</td>
                             <td>{$o['duration']}</td>
-                            <td>
+                            <td class="text-center">
                                 <a href="{link meetingsDetail ['id' => $o['id_meeting']]}"
                                    class="btn-sm btn-success" style="text-decoration: none"><span class="fa fa-user"></span> Detail</a>
                                 <a href="{link meetingDelete ['id' => $o['id_meeting']]}"

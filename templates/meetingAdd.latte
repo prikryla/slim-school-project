@@ -1,0 +1,36 @@
+{extends layout.latte}
+
+{block title}Slim project | New meeting{/block}
+
+{block body}
+<div class="col justify-content-md-center">
+    <div class="container">
+        {if isset($message)}
+            <div class="alert alert-danger alert-dismissible fade show">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                {$message}
+            </div>
+        {/if}
+        <h1>NEW MEETING</h1>
+        <div class="justify-content-md-center">
+            <form method="post">
+                <div class="form-col w-75">
+                    <div class="row form-group mt-4">
+                        <label for="start">Start</label>
+                        <input class="form-control" type="datetime-local" name="start"
+                               required value="{$formData['start']}">
+                        <label class="mt-2" for="description">Description</label>
+                        <textarea class="form-control" name="description"
+                               required value="{$formData['description']}">
+                        </textarea>
+                        <label class="mt-2" for="duration">Duration</label>
+                        <input class="form-control" type="time" name="duration"
+                               required value="{$formData['duration']}">
+                        <br>
+                        <button type="submit" class="btn btn-primary pl-2"><span class="fa fa-check">&nbsp;<span>Submit</button>
+                    </div>
+            </form>
+        </div>
+    </div>
+</div>
+{/block}
